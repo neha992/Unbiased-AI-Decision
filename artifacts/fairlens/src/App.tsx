@@ -11,6 +11,7 @@ import Analyzer from "@/pages/Analyzer";
 import Copilot from "@/pages/Copilot";
 import Upload from "@/pages/Upload";
 import Report from "@/pages/Report";
+import Pipeline from "@/pages/Pipeline";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ function Router() {
         <Route path="/analyzer" component={Analyzer} />
         <Route path="/copilot" component={Copilot} />
         <Route path="/upload" component={Upload} />
+        <Route path="/pipeline" component={Pipeline} />
         <Route path="/report" component={Report} />
         <Route component={NotFound} />
       </Switch>

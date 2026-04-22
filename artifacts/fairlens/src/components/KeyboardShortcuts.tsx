@@ -21,6 +21,7 @@ export function KeyboardShortcuts({ open, onOpenChange }: { open: boolean, onOpe
         if (key === "s") setLocation("/simulator");
         if (key === "a") setLocation("/analyzer");
         if (key === "c") setLocation("/copilot");
+        if (key === "p") setLocation("/pipeline");
         if (key === "r") setLocation("/report");
         lastKey = "";
         clearTimeout(timeout);
@@ -64,6 +65,9 @@ export function KeyboardShortcuts({ open, onOpenChange }: { open: boolean, onOpe
             
             <div className="font-semibold text-muted-foreground">Go to Copilot</div>
             <div className="flex gap-1 justify-end"><kbd className="bg-muted px-2 py-1 rounded border shadow-sm">G</kbd> then <kbd className="bg-muted px-2 py-1 rounded border shadow-sm">C</kbd></div>
+
+            <div className="font-semibold text-muted-foreground">Go to Pipeline</div>
+            <div className="flex gap-1 justify-end"><kbd className="bg-muted px-2 py-1 rounded border shadow-sm">G</kbd> then <kbd className="bg-muted px-2 py-1 rounded border shadow-sm">P</kbd></div>
 
             <div className="font-semibold text-muted-foreground">Go to Report</div>
             <div className="flex gap-1 justify-end"><kbd className="bg-muted px-2 py-1 rounded border shadow-sm">G</kbd> then <kbd className="bg-muted px-2 py-1 rounded border shadow-sm">R</kbd></div>

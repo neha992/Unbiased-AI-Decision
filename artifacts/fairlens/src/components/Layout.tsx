@@ -17,6 +17,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     { href: "/analyzer", label: "Analyzer" },
     { href: "/copilot", label: "Copilot" },
     { href: "/upload", label: "Upload Dataset" },
+    { href: "/pipeline", label: "Pipeline" },
     { href: "/report", label: "Report" },
   ];
 

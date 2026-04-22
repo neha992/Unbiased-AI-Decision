@@ -79,6 +79,11 @@ export function CommandMenu() {
             <FileSpreadsheet className="mr-2 h-4 w-4" />
             <span>Upload Dataset</span>
           </CommandItem>
+          <CommandItem onSelect={() => runAction(() => setLocation("/pipeline"))}>
+            <Activity className="mr-2 h-4 w-4" />
+            <span>Pipeline</span>
+            <CommandShortcut>G P</CommandShortcut>
+          </CommandItem>
           <CommandItem onSelect={() => runAction(() => setLocation("/report"))}>
             <BarChart className="mr-2 h-4 w-4" />
             <span>Report</span>

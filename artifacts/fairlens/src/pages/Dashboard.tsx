@@ -86,6 +86,11 @@ export default function Dashboard() {
                       Ask Bias Copilot
                     </Button>
                   </Link>
+                  <Link href="/pipeline">
+                    <Button variant="secondary" size="lg" className="w-full sm:w-auto font-semibold gap-2">
+                      Run Full Pipeline
+                    </Button>
+                  </Link>
                 </div>
               </div>
               
