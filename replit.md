@@ -4,6 +4,10 @@
 
 pnpm workspace monorepo using TypeScript. Each package manages its own dependencies.
 
+## Apps
+
+- **FairLens AI** (`artifacts/fairlens`) — interactive 5-screen AI fairness dashboard for hackathon demo. Routes: `/` (Bias Snapshot), `/simulator` (Live Bias Simulator), `/copilot` (Bias Copilot Q&A), `/upload` (CSV upload + analysis), `/report` (Before vs After debiasing report). Frontend-only, mock data, navy+amber theme.
+
 ## Stack
 
 - **Monorepo tool**: pnpm workspaces
