@@ -5,8 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Cell } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Cell, ReferenceLine } from "recharts";
 import { AlertTriangle, Play, MessageSquare, Info } from "lucide-react";
+import { ChartAnalyzer } from "@/components/ChartAnalyzer";
 
 function AnimatedCounter({ value }: { value: number }) {
   const [count, setCount] = useState(0);
@@ -30,6 +31,9 @@ function AnimatedCounter({ value }: { value: number }) {
 }
 
 export default function Dashboard() {
+  const [chartThreshold, setChartThreshold] = useState(50);
+  const [selectedBar, setSelectedBar] = useState<string | null>(null);
+
   const chartData = [
     { name: "Male", approvalRate: 78, fill: "hsl(var(--primary))" },
     { name: "Female", approvalRate: 51, fill: "hsl(var(--destructive))" },
@@ -85,21 +89,40 @@ export default function Dashboard() {
                 </div>
               </div>
               
-              <div className="h-[300px] w-full border rounded-xl p-4 bg-muted/30">
-                <h3 className="text-center font-semibold text-sm mb-4 text-muted-foreground uppercase tracking-wider">Approval Rate by Gender</h3>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart layout="vertical" data={chartData} margin={{ top: 0, right: 30, left: 20, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="hsl(var(--border))" />
-                    <XAxis type="number" domain={[0, 100]} hide />
-                    <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: 'hsl(var(--foreground))', fontWeight: 500 }} />
-                    <RechartsTooltip cursor={{ fill: 'transparent' }} />
-                    <Bar dataKey="approvalRate" radius={[0, 4, 4, 0]} animationDuration={1500}>
-                      {chartData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.fill} />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
+              <div className="h-[300px] w-full">
+                <ChartAnalyzer
+                  title="Approval Rate by Gender"
+                  data={chartData}
+                  dataKey="approvalRate"
+                  threshold={chartThreshold}
+                  onThresholdChange={setChartThreshold}
+                  selectedBar={selectedBar}
+                >
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart layout="vertical" data={chartData} margin={{ top: 0, right: 30, left: 20, bottom: 0 }}>
+                      <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="hsl(var(--border))" />
+                      <XAxis type="number" domain={[0, 100]} hide />
+                      <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: 'hsl(var(--foreground))', fontWeight: 500 }} />
+                      <RechartsTooltip cursor={{ fill: 'transparent' }} />
+                      <ReferenceLine x={chartThreshold} stroke="hsl(var(--primary))" strokeDasharray="3 3" label={{ position: 'top', value: 'Threshold', fill: 'hsl(var(--primary))', fontSize: 10 }} />
+                      <Bar 
+                        dataKey="approvalRate" 
+                        radius={[0, 4, 4, 0]} 
+                        animationDuration={1500}
+                        onClick={(data) => setSelectedBar(data.name)}
+                        className="cursor-pointer"
+                      >
+                        {chartData.map((entry, index) => (
+                          <Cell 
+                            key={`cell-${index}`} 
+                            fill={entry.fill} 
+                            opacity={selectedBar && selectedBar !== entry.name ? 0.3 : 1}
+                          />
+                        ))}
+                      </Bar>
+                    </BarChart>
+                  </ResponsiveContainer>
+                </ChartAnalyzer>
               </div>
             </div>
           </CardContent>

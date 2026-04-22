@@ -5,8 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend, Cell } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Legend, Cell, ReferenceLine } from "recharts";
 import { CheckCircle2, ArrowRight, ShieldCheck, Download } from "lucide-react";
+import { ChartAnalyzer } from "@/components/ChartAnalyzer";
 
 function AnimatedNumber({ value, isFloat = false }: { value: number, isFloat?: boolean }) {
   const [count, setCount] = useState(0);
@@ -31,6 +32,9 @@ function AnimatedNumber({ value, isFloat = false }: { value: number, isFloat?: b
 
 export default function Report() {
   const [, setLocation] = useLocation();
+
+  const [featBeforeSelected, setFeatBeforeSelected] = useState<string | null>(null);
+  const [featAfterSelected, setFeatAfterSelected] = useState<string | null>(null);
 
   const approvalData = [
     { name: "Male", Before: 78, After: 72 },
@@ -164,39 +168,69 @@ export default function Report() {
             <CardContent>
               <div className="grid md:grid-cols-2 gap-8">
                 <div>
-                  <h4 className="text-sm font-semibold mb-4 text-center uppercase tracking-wider text-muted-foreground">Before</h4>
-                  <div className="h-[250px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart layout="vertical" data={featureDataBefore} margin={{ top: 0, right: 10, left: 30, bottom: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="hsl(var(--border))" />
-                        <XAxis type="number" hide />
-                        <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 12 }} />
-                        <RechartsTooltip cursor={{ fill: 'hsl(var(--muted)/0.5)' }} />
-                        <Bar dataKey="importance" radius={[0, 4, 4, 0]}>
-                          {featureDataBefore.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.fill} />
-                          ))}
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
+                  <div className="h-[280px]">
+                    <ChartAnalyzer 
+                      title="Before (Importance)" 
+                      data={featureDataBefore} 
+                      dataKey="importance"
+                      selectedBar={featBeforeSelected}
+                    >
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart layout="vertical" data={featureDataBefore} margin={{ top: 0, right: 10, left: 30, bottom: 0 }}>
+                          <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="hsl(var(--border))" />
+                          <XAxis type="number" hide />
+                          <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 12 }} />
+                          <RechartsTooltip cursor={{ fill: 'hsl(var(--muted)/0.5)' }} />
+                          <Bar 
+                            dataKey="importance" 
+                            radius={[0, 4, 4, 0]}
+                            onClick={(data) => setFeatBeforeSelected(data.name)}
+                            className="cursor-pointer"
+                          >
+                            {featureDataBefore.map((entry, index) => (
+                              <Cell 
+                                key={`cell-${index}`} 
+                                fill={entry.fill} 
+                                opacity={featBeforeSelected && featBeforeSelected !== entry.name ? 0.3 : 1}
+                              />
+                            ))}
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </ChartAnalyzer>
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-sm font-semibold mb-4 text-center uppercase tracking-wider text-muted-foreground">After</h4>
-                  <div className="h-[250px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart layout="vertical" data={featureDataAfter} margin={{ top: 0, right: 10, left: 30, bottom: 0 }}>
-                        <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="hsl(var(--border))" />
-                        <XAxis type="number" hide />
-                        <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 12 }} />
-                        <RechartsTooltip cursor={{ fill: 'hsl(var(--muted)/0.5)' }} />
-                        <Bar dataKey="importance" radius={[0, 4, 4, 0]}>
-                          {featureDataAfter.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.fill} />
-                          ))}
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
+                  <div className="h-[280px]">
+                    <ChartAnalyzer 
+                      title="After (Importance)" 
+                      data={featureDataAfter} 
+                      dataKey="importance"
+                      selectedBar={featAfterSelected}
+                    >
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart layout="vertical" data={featureDataAfter} margin={{ top: 0, right: 10, left: 30, bottom: 0 }}>
+                          <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="hsl(var(--border))" />
+                          <XAxis type="number" hide />
+                          <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fontSize: 12 }} />
+                          <RechartsTooltip cursor={{ fill: 'hsl(var(--muted)/0.5)' }} />
+                          <Bar 
+                            dataKey="importance" 
+                            radius={[0, 4, 4, 0]}
+                            onClick={(data) => setFeatAfterSelected(data.name)}
+                            className="cursor-pointer"
+                          >
+                            {featureDataAfter.map((entry, index) => (
+                              <Cell 
+                                key={`cell-${index}`} 
+                                fill={entry.fill} 
+                                opacity={featAfterSelected && featAfterSelected !== entry.name ? 0.3 : 1}
+                              />
+                            ))}
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </ChartAnalyzer>
                   </div>
                 </div>
               </div>

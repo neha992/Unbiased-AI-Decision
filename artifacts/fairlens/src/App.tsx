@@ -7,6 +7,7 @@ import { Layout } from "@/components/Layout";
 
 import Dashboard from "@/pages/Dashboard";
 import Simulator from "@/pages/Simulator";
+import Analyzer from "@/pages/Analyzer";
 import Copilot from "@/pages/Copilot";
 import Upload from "@/pages/Upload";
 import Report from "@/pages/Report";
@@ -19,6 +20,7 @@ function Router() {
       <Switch>
         <Route path="/" component={Dashboard} />
         <Route path="/simulator" component={Simulator} />
+        <Route path="/analyzer" component={Analyzer} />
         <Route path="/copilot" component={Copilot} />
         <Route path="/upload" component={Upload} />
         <Route path="/report" component={Report} />
