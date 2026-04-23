@@ -201,17 +201,32 @@ export default function Upload() {
                     <span className="font-semibold text-amber-900 dark:text-amber-200">Analysis Complete</span>
                   </div>
                   <CardContent className="p-6">
-                    <div className="grid md:grid-cols-3 gap-6 mb-8">
+                    <div className="grid md:grid-cols-4 gap-4 mb-8">
                       <div className="bg-muted rounded-lg p-4">
-                        <div className="text-sm text-muted-foreground mb-1 font-medium">Group Distribution</div>
+                        <div className="text-sm text-muted-foreground mb-1 font-medium">Group Mix</div>
                         {metrics.genderApproval.length > 0 ? (
-                          <div className="font-semibold text-lg">
+                          <div className="font-semibold text-base">
                             {metrics.genderApproval
                               .map((g) => `${g.name} ${Math.round((g.count / metrics.totalRows) * 100)}%`)
                               .join(" / ")}
                           </div>
                         ) : (
                           <div className="text-sm text-muted-foreground">No gender column detected</div>
+                        )}
+                      </div>
+                      <div className="bg-muted rounded-lg p-4">
+                        <div className="text-sm text-muted-foreground mb-1 font-medium">Approval Rates</div>
+                        {metrics.genderApproval.length > 0 ? (
+                          <div className="font-semibold text-base space-y-0.5">
+                            {metrics.genderApproval.map((g) => (
+                              <div key={g.name} className="flex justify-between gap-2">
+                                <span className="text-muted-foreground">{g.name}</span>
+                                <span className={g.approvalRate >= 60 ? "text-green-600" : "text-destructive"}>{g.approvalRate}%</span>
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="text-sm text-muted-foreground">No label column</div>
                         )}
                       </div>
                       <div className="bg-muted rounded-lg p-4">
@@ -225,8 +240,10 @@ export default function Upload() {
                       </div>
                       <div className="bg-muted rounded-lg p-4">
                         <div className="text-sm text-muted-foreground mb-1 font-medium">Data Quality</div>
-                        <div className="font-semibold text-lg">{metrics.missing} missing values</div>
-                        <div className="text-xs text-green-600 dark:text-green-400 mt-1">{((metrics.missing / (metrics.totalRows * dataset.columns.length || 1)) * 100).toFixed(2)}% of cells</div>
+                        <div className="font-semibold text-lg">{metrics.missing.toLocaleString()} missing</div>
+                        <div className="text-xs text-muted-foreground mt-1">
+                          {((metrics.missing / (metrics.totalRows * dataset.columns.length || 1)) * 100).toFixed(2)}% of cells
+                        </div>
                       </div>
                     </div>
 
