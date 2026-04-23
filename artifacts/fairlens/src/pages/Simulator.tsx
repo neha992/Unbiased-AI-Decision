@@ -50,25 +50,26 @@ export default function Simulator() {
   const [profileA, setProfileA] = useState<Profile>({ ...defaultProfile, gender: "Male" });
   const [profileB, setProfileB] = useState<Profile>({ ...defaultProfile, gender: "Female" });
 
-  const updateA = (patch: Partial<Profile>) => {
-    setProfileA((prev) => {
-      const next = { ...prev, ...patch };
-      if (linked) {
-        setProfileB({ ...next, gender: next.gender === "Male" ? "Female" : "Male" });
+  const update = (which: "A" | "B", patch: Partial<Profile>) => {
+    const isGender = "gender" in patch;
+    const setSelf = which === "A" ? setProfileA : setProfileB;
+    const setOther = which === "A" ? setProfileB : setProfileA;
+
+    setSelf((prev) => ({ ...prev, ...patch }));
+    if (!linked) return;
+
+    setOther((prev) => {
+      if (isGender) {
+        // Keep genders opposite — flip the other to the opposite of the new gender
+        return { ...prev, gender: patch.gender === "Male" ? "Female" : "Male" };
       }
-      return next;
+      // Mirror non-gender attributes so only gender differs
+      return { ...prev, ...patch };
     });
   };
 
-  const updateB = (patch: Partial<Profile>) => {
-    setProfileB((prev) => {
-      const next = { ...prev, ...patch };
-      if (linked && !("gender" in patch)) {
-        setProfileA({ ...next, gender: next.gender === "Male" ? "Female" : "Male" });
-      }
-      return next;
-    });
-  };
+  const updateA = (patch: Partial<Profile>) => update("A", patch);
+  const updateB = (patch: Partial<Profile>) => update("B", patch);
 
   useEffect(() => {
     const t = setTimeout(() => setShowBanner(true), 600);
