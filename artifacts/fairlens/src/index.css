@@ -173,5 +173,117 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    font-feature-settings: "cv11", "ss01", "ss03";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
+
+  ::selection {
+    background: hsl(38 92% 50% / 0.25);
+    color: hsl(222 47% 11%);
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb {
+    background: hsl(220 13% 80%);
+    border-radius: 8px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+  }
+  ::-webkit-scrollbar-thumb:hover { background: hsl(220 13% 65%); background-clip: padding-box; border: 2px solid transparent; }
+}
+
+@layer utilities {
+  /* Gradient text — navy → indigo → amber */
+  .text-gradient-brand {
+    background: linear-gradient(135deg, hsl(222 47% 11%) 0%, hsl(232 60% 35%) 45%, hsl(38 92% 50%) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-gradient-amber {
+    background: linear-gradient(135deg, hsl(45 100% 60%) 0%, hsl(38 92% 50%) 50%, hsl(28 92% 45%) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Animated gradient mesh background */
+  .bg-mesh {
+    background-color: hsl(222 47% 9%);
+    background-image:
+      radial-gradient(at 20% 20%, hsl(232 70% 35% / 0.55) 0px, transparent 55%),
+      radial-gradient(at 78% 18%, hsl(265 70% 40% / 0.45) 0px, transparent 50%),
+      radial-gradient(at 12% 82%, hsl(38 92% 50% / 0.30) 0px, transparent 45%),
+      radial-gradient(at 85% 90%, hsl(210 80% 35% / 0.45) 0px, transparent 50%);
+  }
+
+  /* Subtle dotted grid */
+  .bg-grid-dots {
+    background-image: radial-gradient(circle at 1px 1px, hsl(220 13% 70% / 0.35) 1px, transparent 0);
+    background-size: 22px 22px;
+  }
+  .bg-grid-dots-dark {
+    background-image: radial-gradient(circle at 1px 1px, hsl(210 40% 98% / 0.08) 1px, transparent 0);
+    background-size: 22px 22px;
+  }
+
+  /* Glass card */
+  .glass {
+    background: hsl(0 0% 100% / 0.65);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    border: 1px solid hsl(220 13% 90% / 0.7);
+  }
+  .glass-dark {
+    background: hsl(222 47% 11% / 0.55);
+    backdrop-filter: blur(14px) saturate(160%);
+    -webkit-backdrop-filter: blur(14px) saturate(160%);
+    border: 1px solid hsl(210 40% 98% / 0.10);
+  }
+
+  /* Glow shadows */
+  .shadow-glow-amber { box-shadow: 0 0 0 1px hsl(38 92% 50% / 0.30), 0 10px 35px -8px hsl(38 92% 50% / 0.45); }
+  .shadow-glow-primary { box-shadow: 0 0 0 1px hsl(232 60% 35% / 0.25), 0 10px 35px -8px hsl(232 60% 35% / 0.45); }
+  .shadow-soft { box-shadow: 0 1px 0 hsl(220 13% 90%), 0 8px 24px -10px hsl(222 47% 11% / 0.10); }
+  .shadow-pop { box-shadow: 0 1px 0 hsl(220 13% 90%), 0 14px 40px -12px hsl(222 47% 11% / 0.18); }
+
+  /* Floating orbs / animations */
+  @keyframes float-slow {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(20px, -30px) scale(1.05); }
+  }
+  @keyframes float-slower {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-25px, 25px) scale(0.95); }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes pulse-ring {
+    0% { box-shadow: 0 0 0 0 hsl(38 92% 50% / 0.55); }
+    70% { box-shadow: 0 0 0 14px hsl(38 92% 50% / 0); }
+    100% { box-shadow: 0 0 0 0 hsl(38 92% 50% / 0); }
+  }
+  @keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .animate-float-slow { animation: float-slow 14s ease-in-out infinite; }
+  .animate-float-slower { animation: float-slower 18s ease-in-out infinite; }
+  .animate-pulse-ring { animation: pulse-ring 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+  .animate-gradient { background-size: 200% 200%; animation: gradient-shift 8s ease infinite; }
+  .animate-shimmer {
+    background: linear-gradient(110deg, transparent 30%, hsl(0 0% 100% / 0.18) 50%, transparent 70%);
+    background-size: 200% 100%;
+    animation: shimmer 2.4s linear infinite;
+  }
+
+  /* Card hover lift */
+  .hover-lift { transition: transform .25s ease, box-shadow .25s ease; }
+  .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -16px hsl(222 47% 11% / 0.20); }
 }
